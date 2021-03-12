@@ -19,7 +19,7 @@ public class CrashTestSourceTask extends SourceTask {
     private static final Logger logger = LoggerFactory.getLogger(CrashTestSourceTask.class.getName());
     public static final int PERIOD_IN_SECONDS = 2;
     public static final int INITIAL_DELAY_IN_SECONDS = 1;
-    private static final ScheduledExecutorService SCHEDULER =Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService SCHEDULER =Executors.newScheduledThreadPool(1);
     private Version version;
     private  ScheduledFuture<?> scheduledFuture;
     public CrashTestSourceTask() {
@@ -41,6 +41,7 @@ public class CrashTestSourceTask extends SourceTask {
         Preconditions.checkArgument(props.containsKey(CRASH_UNIT_KEY));
         Preconditions.checkArgument(props.containsKey(CRASH_INITIAL_DELAY_KEY));
         Preconditions.checkArgument(props.containsKey(CRASH_PERIOD_KEY));
+        Preconditions.checkState(scheduledFuture==null,"'start' method has already been called");
         long initialDelay = Long.parseLong(props.get(CRASH_INITIAL_DELAY_KEY));
         logger.debug("initial delay:{}",initialDelay);
         long period = Long.parseLong(props.get(CRASH_PERIOD_KEY));
@@ -66,6 +67,7 @@ public class CrashTestSourceTask extends SourceTask {
 
     @Override
     public void stop() {
-
+        Preconditions.checkState(!SCHEDULER.isShutdown(),"'stop' method has already been called: scheduler is already shutting down ");
+        SCHEDULER.shutdown();
     }
 }
