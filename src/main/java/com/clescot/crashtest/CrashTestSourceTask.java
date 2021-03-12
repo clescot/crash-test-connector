@@ -17,8 +17,6 @@ import java.util.concurrent.TimeUnit;
 public class CrashTestSourceTask extends SourceTask {
 
     private static final Logger logger = LoggerFactory.getLogger(CrashTestSourceTask.class.getName());
-    public static final int PERIOD_IN_SECONDS = 2;
-    public static final int INITIAL_DELAY_IN_SECONDS = 1;
     private final ScheduledExecutorService SCHEDULER =Executors.newScheduledThreadPool(1);
     private Version version;
     private  ScheduledFuture<?> scheduledFuture;

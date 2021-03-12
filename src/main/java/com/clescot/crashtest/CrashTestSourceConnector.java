@@ -21,7 +21,7 @@ public class CrashTestSourceConnector extends SourceConnector {
 
     @Override
     public Class<? extends Task> taskClass() {
-        return null;
+        return CrashTestSourceTask.class;
     }
 
     @Override
