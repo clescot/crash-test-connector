@@ -54,9 +54,6 @@ public class CrashTestSourceTask extends SourceTask {
 
     @Override
     public List<SourceRecord> poll() {
-        //return dummy records in a controlled rate per TASK.
-        //two use cases : rate per message, or per b    yte
-//        logger.error("mustThrowError={}",mustThrowError);
         if(mustThrowError){
             logger.error("exception");
             mustThrowError=false;
