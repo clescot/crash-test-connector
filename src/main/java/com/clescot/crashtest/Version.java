@@ -12,11 +12,10 @@ public class Version {
     private static final String VERSION_PROPERTIES = "version.properties";
     private static final Logger logger = LoggerFactory.getLogger(Version.class.getName());
     private static final Object VERSION_KEY = "project.version";
-    private static final String UNKNOWN_VERSION = "unknown version";
 
     public String getVersion() {
         Properties properties = new Properties();
-        String version = UNKNOWN_VERSION;
+        String version;
         InputStream versionInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(VERSION_PROPERTIES);
 
         try {
