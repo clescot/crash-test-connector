@@ -17,16 +17,16 @@ import java.util.concurrent.TimeUnit;
 public class CrashTestSourceTask extends SourceTask {
 
     private static final Logger logger = LoggerFactory.getLogger(CrashTestSourceTask.class.getName());
-    private final ScheduledExecutorService SCHEDULER =Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
     private Version version;
     private  ScheduledFuture<?> scheduledFuture;
     public CrashTestSourceTask() {
         version = new Version();
     }
     private volatile boolean mustThrowError;
-    public static final String CRASH_UNIT_KEY = "crash.unit";
-    public static final String CRASH_INITIAL_DELAY_KEY = "crash.initial.delay";
-    public static final String CRASH_PERIOD_KEY = "crash.period";
+    public static final String TASK_CRASH_UNIT_KEY = "task.crash.unit";
+    public static final String TASK_CRASH_INITIAL_DELAY_KEY = "task.crash.initial.delay";
+    public static final String TASK_CRASH_PERIOD_KEY = "task.crash.period";
 
 
     @Override
@@ -36,15 +36,15 @@ public class CrashTestSourceTask extends SourceTask {
 
     @Override
     public void start(Map<String, String> props) {
-        Preconditions.checkArgument(props.containsKey(CRASH_UNIT_KEY));
-        Preconditions.checkArgument(props.containsKey(CRASH_INITIAL_DELAY_KEY));
-        Preconditions.checkArgument(props.containsKey(CRASH_PERIOD_KEY));
+        Preconditions.checkArgument(props.containsKey(TASK_CRASH_UNIT_KEY));
+        Preconditions.checkArgument(props.containsKey(TASK_CRASH_INITIAL_DELAY_KEY));
+        Preconditions.checkArgument(props.containsKey(TASK_CRASH_PERIOD_KEY));
         Preconditions.checkState(scheduledFuture==null,"'start' method has already been called");
-        long initialDelay = Long.parseLong(props.get(CRASH_INITIAL_DELAY_KEY));
+        long initialDelay = Long.parseLong(props.get(TASK_CRASH_INITIAL_DELAY_KEY));
         logger.debug("initial delay:{}",initialDelay);
-        long period = Long.parseLong(props.get(CRASH_PERIOD_KEY));
+        long period = Long.parseLong(props.get(TASK_CRASH_PERIOD_KEY));
         logger.debug("period:{}",period);
-        TimeUnit unit = TimeUnit.valueOf(props.get(CRASH_UNIT_KEY));
+        TimeUnit unit = TimeUnit.valueOf(props.get(TASK_CRASH_UNIT_KEY));
         logger.debug("unit:{}",unit);
         scheduledFuture = SCHEDULER.scheduleAtFixedRate(() -> {logger.error("scheduled");mustThrowError = true;}, initialDelay, period, unit);
 
